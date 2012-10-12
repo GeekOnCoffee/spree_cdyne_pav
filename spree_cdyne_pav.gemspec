@@ -3,13 +3,13 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_cdyne_pav'
   s.version     = '1.1.2.rc1'
-  s.summary     = 'TODO: Add gem summary here'
-  s.description = 'TODO: Add (optional) gem description here'
+  s.summary     = 'Spree integration with Cdyne Address Verification'
+  s.description = 'Spree integration with Cdyne Address Verification, a commercial service'
   s.required_ruby_version = '>= 1.8.7'
 
-  # s.author    = 'You'
-  # s.email     = 'you@example.com'
-  # s.homepage  = 'http://www.spreecommerce.com'
+  s.author    = 'Andrew Hooker'
+  s.email     = 'andrew@spreecommerce.com'
+  s.homepage  = 'http://www.spreecommerce.com'
 
   #s.files       = `git ls-files`.split("\n")
   #s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
