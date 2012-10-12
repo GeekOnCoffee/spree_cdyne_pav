@@ -1,0 +1,36 @@
+<% if flash[:retry_address] %>
+	<% address = @order.shipping_address %>
+	<div><b>You entered:</b><br>
+		<%= address.firstname %> <%= address.lastname %><br>
+		<%= address.company %><br>
+		<%= address.address1 %><br>
+		<%= address.address2 %><br>
+		<%= address.city %>, <%= address.state_text %>, <%= address.zipcode %><br>
+		<%= address.country %><br>
+	</div>
+	
+	
+<div class="columns omega six" data-hook="shipping_fieldset_wrapper">
+<%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
+  <%= form.fields_for :ship_address do |ship_form| %>
+        <%= ship_form.hidden_field :firstname %>
+        <%= ship_form.hidden_field :lastname %>
+        <%= ship_form.hidden_field :company %>
+        <%= ship_form.hidden_field :address1 %>
+        <%= ship_form.hidden_field :address2 %>
+        <%= ship_form.hidden_field :city %>
+        <%= ship_form.hidden_field :country_id %>
+        <%= ship_form.hidden_field :state_id  %>
+        <%= ship_form.hidden_field :state_name %>
+        <%= ship_form.hidden_field :zipcode %>
+        <%= ship_form.hidden_field :phone %>
+        <%= ship_form.hidden_field :alternative_phone %>
+		<%= ship_form.hidden_field :cdyne_override, :value => true %>
+		<div class="form-buttons" data-hook="buttons">
+		  <%= submit_tag t(:use_original_address), :class => 'continue button' %>
+		</div>
+      <% end %>
+	<% end %>
+    </div>
+</div>
+<% end %>
