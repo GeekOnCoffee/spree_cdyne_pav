@@ -1,6 +1,11 @@
 Spree::CheckoutController.class_eval do
   
   def update
+    if params[:order].delete("cdyne_override")
+      @order.cdyne_override
+      @order.cdyne_overridden = true
+    end
+
     if @order.update_attributes(object_params)
       fire_event('spree.checkout.update')
 

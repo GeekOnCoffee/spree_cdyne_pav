@@ -1,24 +1,33 @@
 Spree::Address.class_eval do
   attr_accessor :cdyne_override
-  attr_accessible :cdyne_override
+  attr_accessible :cdyne_override, :cdyne_address_id
+  
+  has_one :cdyne_address, :class_name => "Spree::Address", :foreign_key => :cdyne_address_id
 
   def cdyne_update
-    corrected_address = self.cdyne_address
-    Rails.logger.error(corrected_address)
-    self.address1 = corrected_address["PrimaryDeliveryLine"]
-    self.address2 = corrected_address["SecondaryDeliveryLine"]
-    self.city = corrected_address["CityName"]
-    self.zipcode = corrected_address["ZipCode"] if corrected_address["ZipCode"].present?
-    self.country =  Spree::Country.find_by_name(corrected_address["Country"]) if corrected_address["Country"].present?
-    self.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) if corrected_address["StateAbbreviation"].present?
-    self.save
+    corrected_address = self.cdyne_address_response
+    
+    correct_address = self.class.create! do |address|
+      address.firstname = self.firstname
+      address.lastname = self.lastname
+      address.address1 = corrected_address["PrimaryDeliveryLine"]
+      address.address2 = corrected_address["SecondaryDeliveryLine"]
+      address.city = corrected_address["CityName"]
+      address.zipcode = corrected_address["ZipCode"].presence || self.zipcode
+      address.country =  Spree::Country.find_by_name(corrected_address["Country"]) || self.country
+      address.phone = self.phone
+      address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
+    end
+    
+    self.update_attribute(:cdyne_address_id, correct_address.id)
+
   end
 
   def cdyne_address_valid?
-    cdyne_override || cdyne_address_status
+    cdyne_address_status
   end
 
-  def cdyne_address_status(status_code=cdyne_address["ReturnCode"])
+  def cdyne_address_status(status_code=cdyne_address_response["ReturnCode"])
     case status_code
     when 2
       raise "Invalid Cdyne License specified"
@@ -29,7 +38,7 @@ Spree::Address.class_eval do
     end
   end
 
-  def cdyne_address_description(status_code=cdyne_address["ReturnCode"])
+  def cdyne_address_description(status_code=cdyne_address_response["ReturnCode"])
     case status_code
     when 2
       Rails.logger.error "Invalid Cdyne License specified"
@@ -46,7 +55,7 @@ Spree::Address.class_eval do
     end
   end
 
-  def cdyne_address
+  def cdyne_address_response
     @request ||= HTTParty.post('http://pav3.cdyne.com/PavService.svc/VerifyAddressAdvanced', :body => cdyne_query_hash, :headers => {"content-type" => "application/json"})
     return @request.parsed_response
   end

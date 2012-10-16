@@ -1,3 +1,4 @@
+<!-- insert_after 'div#checkout' -->
 <%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
 	<%= form.hidden_field :cdyne_override, :value => true %>
    <div class="form-buttons" data-hook="buttons">

@@ -1,2 +1,0 @@
-<!-- insert_before "[data-hook='billing_fieldset_wrapper']" -->
-<%= render :partial => 'spree/checkout/alternate_addresses' %>
