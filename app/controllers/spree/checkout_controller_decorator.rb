@@ -4,6 +4,8 @@ Spree::CheckoutController.class_eval do
     if params[:order].delete("cdyne_override")
       @order.cdyne_override
       @order.cdyne_overridden = true
+      params[:order].delete("bill_address_attributes")
+      params[:order].delete("ship_address_attributes")
     end
 
     if @order.update_attributes(object_params)

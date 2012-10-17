@@ -7,7 +7,13 @@ Spree::Address.class_eval do
   def cdyne_update
     corrected_address = self.cdyne_address_response
     
-    correct_address = self.class.create! do |address|
+    if cdyne_address_status
+      address = self
+    else
+      address = self.class.new
+    end
+    
+    
       address.firstname = self.firstname
       address.lastname = self.lastname
       address.address1 = corrected_address["PrimaryDeliveryLine"]
@@ -17,9 +23,11 @@ Spree::Address.class_eval do
       address.country =  Spree::Country.find_by_name(corrected_address["Country"]) || self.country
       address.phone = self.phone
       address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
+      address.save!
+      
+    unless cdyne_address_status
+      self.update_attribute(:cdyne_address_id, address.id)
     end
-    
-    self.update_attribute(:cdyne_address_id, correct_address.id)
 
   end
 
@@ -43,15 +51,15 @@ Spree::Address.class_eval do
     when 2
       Rails.logger.error "Invalid Cdyne License specified"
     when 10
-      "We are unable to find your address. Please verify that it is correct."
+      "We are unable to find your address.  Please correct or \"Use Original Address\""
     when 100
       "Address Confirmed"
     when 101
       "Address found but not verified"
     when 102
-      "Primary Address Confirmed, Cannot validate second address number"
+      "Primary Address Confirmed, Cannot Validate Second Address. Please correct or \"Use Original Address\""
     when 103
-      "Primary Address Confirmed, Secondary address missing"
+      "Primary Address Confirmed, Secondary address missing. Please correct or \"Use Original Address\""
     end
   end
 
