@@ -82,7 +82,8 @@
 </div>
 
 <% @order.ship_address.reload if @order.ship_address_id %>
-<% original_address = @order.shipping_address.cdyne_address %>
+<% @order.ship_address.cdyne_address.reload if @order.ship_address_id and @order.ship_address.cdyne_address %>
+<% original_address = Spree::Address.find(@order.ship_address.cdyne_address_id) if @order.ship_address and @order.ship_address.cdyne_address_id %>
 <div class="columns omega six" data-hook="shipping_fieldset_wrapper">
 <fieldset id="shipping" data-hook>
   <%= form.fields_for :ship_address do |ship_form| %>
@@ -95,7 +96,6 @@
       <p class="field" id="sfirstname">
         <%= ship_form.label :firstname, t(:first_name) %><span class="required">*</span><br />
         <%= ship_form.text_field :firstname, :class => 'required' %>
-		<% original_address = @order.shipping_address.cdyne_address %>
       </p>
       <p class="field" id="slastname">
         <%= ship_form.label :lastname, t(:last_name) %><span class="required">*</span><br />
@@ -110,18 +110,18 @@
       <p class="field" id="saddress1">
         <%= ship_form.label :address1, t(:street_address) %><span class="required">*</span><br />
         <%= ship_form.text_field :address1, :class => 'required' %>
-		<br><%= "\n#{t('we_found')} #{original_address.address1}" if original_address %>
+		<br><%= "\n#{t('you_entered')} #{original_address.address1}" if original_address %>
       </p>
       <p class="field" id="saddress2">
         <%= ship_form.label :address2, t(:street_address_2) %><br />
         <%= ship_form.text_field :address2 %>
-		<br><%= "\n#{t('we_found')} #{original_address.address2}" if original_address %>
+		<br><%= "\n#{t('you_entered')} #{original_address.address2}" if original_address %>
       </p>
 
       <p class="field" id="scity">
         <%= ship_form.label :city, t(:city) %><span class="required">*</span><br />
         <%= ship_form.text_field :city, :class => 'required' %>
-		<br><%= "#{t('we_found')} #{original_address.city}" if original_address %>
+		<br><%= "#{t('you_entered')} #{original_address.city}" if original_address %>
       </p>
 
       <p class="field" id="scountry">
@@ -149,7 +149,7 @@
           <%= javascript_tag do -%>
             document.write("<%== state_elements %>");
           <% end %>
-		  <br><%= "#{t('we_found')} #{original_address.state_text}" if original_address %>
+		  <br><%= "#{t('you_entered')} #{original_address.state_text}" if original_address %>
         </p>
           <noscript>
             <%= ship_form.text_field :state_name, :class => 'required' %>
@@ -159,7 +159,7 @@
       <p class="field" id="szipcode">
         <%= ship_form.label :zipcode, t(:zip) %><span class="required">*</span><br />
         <%= ship_form.text_field :zipcode, :class => 'required' %>
-	    <br><%= "#{t('we_found')} #{original_address.zipcode}" if original_address %>
+	    <br><%= "#{t('you_entered')} #{original_address.zipcode}" if original_address %>
 		
       </p>
       <p class="field" id="sphone">
@@ -172,9 +172,9 @@
           <%= ship_form.phone_field :alternative_phone %>
         </p>
       <% end %>
-	  <% if flash[:retry_address] %>
-		  <%= form.label :cdyne_override, t(:use_original_address) %><br />
-		  <%= form.check_box :cdyne_override, {:checked => false} %>
+	  <% if original_address %>
+		  <%= form.label :use_original_address, t(:use_original_address) %><br />
+		  <%= form.check_box :use_original_address, {:checked => false} %>
 	  <% end %>
 	  
     </div>

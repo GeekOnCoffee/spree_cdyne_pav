@@ -6,12 +6,8 @@ Spree::Address.class_eval do
 
   def cdyne_update
     corrected_address = self.cdyne_address_response
-    
-    if cdyne_address_status
-      address = self
-    else
-      address = self.class.new
-    end
+  
+    address = self.class.new
     
     address.firstname = self.firstname
     address.lastname = self.lastname
@@ -23,11 +19,9 @@ Spree::Address.class_eval do
     address.phone = self.phone
     address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
     address.save!
+    
+    self.update_attribute(:cdyne_address_id, address.id)
       
-    unless cdyne_address_status
-      self.cdyne_address_id =  address.id
-      self.save!
-    end
   end
 
   def cdyne_address_valid?
