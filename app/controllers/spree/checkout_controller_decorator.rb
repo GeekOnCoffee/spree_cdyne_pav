@@ -1,14 +1,23 @@
 Spree::CheckoutController.class_eval do
   
-  def update
-    if params[:order].delete("cdyne_override")
-      @order.cdyne_override
-      @order.cdyne_overridden = true
+  def update    
+    if params[:order].delete(:cdyne_override)
+      cdyne_override = true
       params[:order].delete("bill_address_attributes")
       params[:order].delete("ship_address_attributes")
+      @order.next
+      @order.cdyne_override
+      respond_with(@order, :location => checkout_state_path(@order.state))
+      return
+    end
+    
+    if @order.state == "address" and @order.ship_address.cdyne_address_valid?
+      @order.next
+      respond_with(@order, :location => checkout_state_path(@order.state))
+      return
     end
 
-    if @order.update_attributes(object_params)
+    if attributes_updated
       fire_event('spree.checkout.update')
 
       if @order.next

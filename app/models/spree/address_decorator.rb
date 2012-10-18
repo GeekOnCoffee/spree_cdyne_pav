@@ -13,22 +13,21 @@ Spree::Address.class_eval do
       address = self.class.new
     end
     
-    
-      address.firstname = self.firstname
-      address.lastname = self.lastname
-      address.address1 = corrected_address["PrimaryDeliveryLine"]
-      address.address2 = corrected_address["SecondaryDeliveryLine"]
-      address.city = corrected_address["CityName"]
-      address.zipcode = corrected_address["ZipCode"].presence || self.zipcode
-      address.country =  Spree::Country.find_by_name(corrected_address["Country"]) || self.country
-      address.phone = self.phone
-      address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
-      address.save!
+    address.firstname = self.firstname
+    address.lastname = self.lastname
+    address.address1 = corrected_address["PrimaryDeliveryLine"]
+    address.address2 = corrected_address["SecondaryDeliveryLine"]
+    address.city = corrected_address["CityName"]
+    address.zipcode = corrected_address["ZipCode"].presence || self.zipcode
+    address.country =  Spree::Country.find_by_name(corrected_address["Country"]) || self.country
+    address.phone = self.phone
+    address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
+    address.save!
       
     unless cdyne_address_status
-      self.update_attribute(:cdyne_address_id, address.id)
+      self.cdyne_address_id =  address.id
+      self.save!
     end
-
   end
 
   def cdyne_address_valid?
