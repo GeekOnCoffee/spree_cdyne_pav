@@ -110,18 +110,18 @@
       <p class="field" id="saddress1">
         <%= ship_form.label :address1, t(:street_address) %><span class="required">*</span><br />
         <%= ship_form.text_field :address1, :class => 'required' %>
-		<br><%= "\n#{t('you_entered')} #{original_address.address1}" if original_address %>
+		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address1}</label>".html_safe if original_address %>
       </p>
       <p class="field" id="saddress2">
         <%= ship_form.label :address2, t(:street_address_2) %><br />
         <%= ship_form.text_field :address2 %>
-		<br><%= "\n#{t('you_entered')} #{original_address.address2}" if original_address %>
+		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address2}</label>".html_safe if original_address %>
       </p>
 
       <p class="field" id="scity">
         <%= ship_form.label :city, t(:city) %><span class="required">*</span><br />
         <%= ship_form.text_field :city, :class => 'required' %>
-		<br><%= "#{t('you_entered')} #{original_address.city}" if original_address %>
+		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.city}</label>".html_safe if original_address %>
       </p>
 
       <p class="field" id="scountry">
@@ -149,7 +149,7 @@
           <%= javascript_tag do -%>
             document.write("<%== state_elements %>");
           <% end %>
-		  <br><%= "#{t('you_entered')} #{original_address.state_text}" if original_address %>
+		  <br><%= "<label class='error'>#{t('you_entered')} #{original_address.state_text}</label>".html_safe if original_address %>
         </p>
           <noscript>
             <%= ship_form.text_field :state_name, :class => 'required' %>
@@ -159,7 +159,7 @@
       <p class="field" id="szipcode">
         <%= ship_form.label :zipcode, t(:zip) %><span class="required">*</span><br />
         <%= ship_form.text_field :zipcode, :class => 'required' %>
-	    <br><%= "#{t('you_entered')} #{original_address.zipcode}" if original_address %>
+	    <br><%= "<label class='error'>#{t('you_entered')} #{original_address.zipcode}</label>".html_safe if original_address %>
 		
       </p>
       <p class="field" id="sphone">
