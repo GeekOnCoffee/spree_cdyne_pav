@@ -5,6 +5,7 @@ Spree::Address.class_eval do
   has_one :cdyne_address, :class_name => "Spree::Address", :foreign_key => :cdyne_address_id
 
   def cdyne_update
+    return true unless self.country.iso3 == "USA"
     corrected_address = self.cdyne_address_response
   
     address = self.class.new
