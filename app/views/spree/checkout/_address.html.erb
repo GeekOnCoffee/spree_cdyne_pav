@@ -110,18 +110,20 @@
       <p class="field" id="saddress1">
         <%= ship_form.label :address1, t(:street_address) %><span class="required">*</span><br />
         <%= ship_form.text_field :address1, :class => 'required' %>
-		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address1}</label>".html_safe if original_address %>
+		<% if original_address and original_address.address1.downcase != @order.ship_address.address1.downcase %>
+			<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address1}</label>".html_safe  %>
+		<% end %>
       </p>
       <p class="field" id="saddress2">
         <%= ship_form.label :address2, t(:street_address_2) %><br />
         <%= ship_form.text_field :address2 %>
-		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address2}</label>".html_safe if original_address %>
+		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address2}</label>".html_safe if original_address and original_address.address2.downcase != @order.ship_address.address2.downcase%>
       </p>
 
       <p class="field" id="scity">
         <%= ship_form.label :city, t(:city) %><span class="required">*</span><br />
         <%= ship_form.text_field :city, :class => 'required' %>
-		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.city}</label>".html_safe if original_address %>
+		<br><%= "<label class='error'>#{t('you_entered')} #{original_address.city}</label>".html_safe if original_address and original_address.city.downcase != @order.ship_address.city.downcase %>
       </p>
 
       <p class="field" id="scountry">
@@ -149,7 +151,10 @@
           <%= javascript_tag do -%>
             document.write("<%== state_elements %>");
           <% end %>
-		  <br><%= "<label class='error'>#{t('you_entered')} #{original_address.state_text}</label>".html_safe if original_address %>
+		  <% if original_address and original_address.state_text.downcase != @order.ship_address.state.abbr.downcase %>
+			  <br>
+			  <%= "<label class='error'>#{t('you_entered')} #{original_address.state_text}</label>".html_safe %>
+		  <% end %>
         </p>
           <noscript>
             <%= ship_form.text_field :state_name, :class => 'required' %>
@@ -159,7 +164,7 @@
       <p class="field" id="szipcode">
         <%= ship_form.label :zipcode, t(:zip) %><span class="required">*</span><br />
         <%= ship_form.text_field :zipcode, :class => 'required' %>
-	    <br><%= "<label class='error'>#{t('you_entered')} #{original_address.zipcode}</label>".html_safe if original_address %>
+	    <br><%= "<label class='error'>#{t('you_entered')} #{original_address.zipcode}</label>".html_safe if original_address and original_address.zipcode.downcase != @order.ship_address.zipcode.downcase %>
 		
       </p>
       <p class="field" id="sphone">
