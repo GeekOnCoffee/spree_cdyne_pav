@@ -1,15 +1,15 @@
 Spree::Address.class_eval do
   attr_accessor :cdyne_override
   attr_accessible :cdyne_override, :cdyne_address_id
-  
+
   has_one :cdyne_address, :class_name => "Spree::Address", :foreign_key => :cdyne_address_id
 
   def cdyne_update
     return true unless self.country.iso3 == "USA"
     corrected_address = self.cdyne_address_response
-  
+
     address = self.class.new
-    
+
     address.firstname = self.firstname
     address.lastname = self.lastname
     address.address1 = corrected_address["PrimaryDeliveryLine"]
@@ -20,9 +20,8 @@ Spree::Address.class_eval do
     address.phone = self.phone
     address.state = Spree::State.find_by_abbr(corrected_address["StateAbbreviation"]) || self.state
     address.save!
-    
+
     self.update_attribute(:cdyne_address_id, address.id)
-      
   end
 
   def cdyne_address_valid?
@@ -58,10 +57,12 @@ Spree::Address.class_eval do
   end
 
   def cdyne_address_response
-    @request ||= HTTParty.post('http://pav3.cdyne.com/PavService.svc/VerifyAddressAdvanced', :body => cdyne_query_hash, :headers => {"content-type" => "application/json"})
+    @request ||= HTTParty.post('http://pav3.cdyne.com/PavService.svc/VerifyAddressAdvanced',
+                                :body => cdyne_query_hash,
+                                :headers => {"content-type" => "application/json"})
     return @request.parsed_response
   end
-  
+
   private
   def cdyne_query_hash
     {
@@ -74,5 +75,5 @@ Spree::Address.class_eval do
       :LicenseKey=> Spree::Config.cdyne_license_key
       }.to_json
   end
-  
+
 end
