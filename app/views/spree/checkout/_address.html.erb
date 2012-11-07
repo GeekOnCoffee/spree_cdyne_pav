@@ -173,9 +173,9 @@
         </p>
       <% end %>
 	  <% if flash[:retry_address] %>
-		  <%= form.label :use_original_address, t(:use_original_address) %><br />
 		  <%= form.check_box :use_original_address, {:checked => false} %>
-	  <% end %>
+      <%= form.label :use_original_address, t(:use_original_address) %>
+    <% end %>
 	  
     </div>
   <% end %>

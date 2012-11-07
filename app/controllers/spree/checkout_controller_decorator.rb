@@ -5,11 +5,9 @@ Spree::CheckoutController.class_eval do
   def update
     if @order.state == "address"
       if params[:order].delete(:use_original_address)  
-        Rails.logger.info("Checkout Update: use_corrected_address")
-        params[:order].delete("ship_address_attributes")
+        Rails.logger.info("Checkout Update: use_original_address")
+        @order.update_attributes(object_params)
         @order.next
-        @order.ship_address_id = @order.ship_address.cdyne_address_id
-        @order.save!
 
       # BDQ: I think this is preventing changes to the address
       # getting saved / verified. So always verify the adresss.

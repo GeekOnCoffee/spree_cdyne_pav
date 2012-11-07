@@ -44,15 +44,15 @@ Spree::Address.class_eval do
     when 2
       Rails.logger.error "Invalid Cdyne License specified"
     when 10
-      "We are unable to find your address.  Please correct or \"Use Original Address\""
+      "We are unable to find your address. Please correct the details supplied or select \"Use Original Address\" to use the current information."
     when 100
       "Address Confirmed"
     when 101
       "Address found but not verified"
     when 102
-      "Primary Address Confirmed, Cannot Validate Second Address. Please correct or \"Use Original Address\""
+      "Primary Address Confirmed, cannot Validate Second Address. Please correct the details supplied or select \"Use Original Address\" to use the current information."
     when 103
-      "Primary Address Confirmed, Secondary address missing. Please correct or \"Use Original Address\""
+      "Primary Address Confirmed, \"Street Address (cont'd)\" field is missing."
     end
   end
 
