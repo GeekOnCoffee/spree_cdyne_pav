@@ -30,7 +30,6 @@ Spree::CheckoutController.class_eval do
         else
           Rails.logger.info("Checkout Update: error")
           flash[:error] = @order.shipping_address.cdyne_address_description
-          flash[:retry_address] = true
         end
       end
       respond_with(@order, :location => checkout_state_path(@order.state))

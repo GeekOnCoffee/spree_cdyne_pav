@@ -177,7 +177,7 @@
           <%= ship_form.phone_field :alternative_phone %>
         </p>
       <% end %>
-	  <% if flash[:retry_address] %>
+	  <% if original_address %>
 		  <%= form.check_box :use_original_address, {:checked => false} %>
       <%= form.label :use_original_address, t(:use_original_address) %>
     <% end %>
