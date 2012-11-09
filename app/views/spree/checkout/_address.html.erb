@@ -19,7 +19,7 @@
       <% end %>
       <p class="field" id="baddress1">
         <%= bill_form.label :address1, t(:street_address) %><span class="required">*</span><br />
-        <%= bill_form.text_field :address1, :class => 'required' %>
+        <%= bill_form.text_area :address1, :class => 'required', :rows => 3 %>
       </p>
       <p class="field" id="baddress2">
         <%= bill_form.label :address2, t(:street_address_2) %><br />
@@ -109,7 +109,7 @@
       <% end %>
       <p class="field" id="saddress1">
         <%= ship_form.label :address1, t(:street_address) %><span class="required">*</span><br />
-        <%= ship_form.text_field :address1, :class => 'required' %>
+        <%= ship_form.text_area :address1, :class => 'required', :rows => 3 %>
 		<% if original_address and original_address.address1.downcase != @order.ship_address.address1.downcase %>
 			<br><%= "<label class='error'>#{t('you_entered')} #{original_address.address1}</label>".html_safe  %>
 		<% end %>
