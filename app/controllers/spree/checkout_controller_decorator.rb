@@ -30,6 +30,10 @@ Spree::CheckoutController.class_eval do
         elsif @order.shipping_address.country.iso3 == "USA"
           Rails.logger.info("Checkout Update: error")
           flash[:error] = @order.shipping_address.cdyne_address_description
+        else
+          @order.update_attributes(object_params)
+          fire_event('spree.checkout.update')
+          @order.next
         end
       end
       respond_with(@order, :location => checkout_state_path(@order.state))
