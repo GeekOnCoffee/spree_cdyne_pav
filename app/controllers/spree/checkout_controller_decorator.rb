@@ -15,7 +15,7 @@ Spree::CheckoutController.class_eval do
         fire_event('spree.checkout.update')
         @order.shipping_address.cdyne_update
 
-        if @order.shipping_address.cdyne_address_valid?
+        if @order.shipping_address.cdyne_address_valid? and @order.shipping_address.country.iso3 == "USA"
           Rails.logger.info("Checkout Update: valid")
           params[:order].delete("ship_address_attributes")
           @order.ship_address.reload
@@ -27,7 +27,7 @@ Spree::CheckoutController.class_eval do
           Rails.logger.info("Checkout Update: #{cdyne_id}")
           @order.update_attribute(:ship_address_id, cdyne_id)
           Rails.logger.info("Checkout Update: done with order.next")
-        else
+        elsif @order.shipping_address.country.iso3 == "USA"
           Rails.logger.info("Checkout Update: error")
           flash[:error] = @order.shipping_address.cdyne_address_description
         end

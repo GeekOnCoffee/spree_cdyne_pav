@@ -27,6 +27,7 @@ Spree::Address.class_eval do
   end
 
   def cdyne_address_valid?
+    return true unless self.country.iso3 == "USA"
     cdyne_address_status
   end
 
