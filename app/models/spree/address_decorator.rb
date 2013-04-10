@@ -88,8 +88,8 @@ Spree::Address.class_eval do
       :PrimaryAddressLine => address1,
       :SecondaryAddressLine => address2,
       :CityName => city,
-      :State =>state_text,
-      :ZipCode =>zipcode,
+      :State => state_text,
+      :ZipCode => zipcode,
       :LicenseKey => Spree::Config.cdyne_license_key
     }.to_json
   end
