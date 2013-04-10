@@ -10,7 +10,7 @@ Spree::Address.class_eval do
   def must_by_cdyne_valid
     if is_shipping && country.iso3 == "USA"
       cdyne_update
-      status_code=cdyne_address_response["ReturnCode"]
+      status_code = cdyne_address_response["ReturnCode"]
       case status_code
       when 1
         errors.add(:base, I18n.t('cdyne.errors.1_invalid_input'))
@@ -85,13 +85,13 @@ Spree::Address.class_eval do
   def cdyne_query_hash
     {
       :FirmOrRecipient => [firstname, lastname].join(" "),
-      :PrimaryAddressLine=> address1,
+      :PrimaryAddressLine => address1,
       :SecondaryAddressLine => address2,
-      :CityName=> city,
-      :State=>state_text,
-      :ZipCode=>zipcode,
-      :LicenseKey=> Spree::Config.cdyne_license_key
-      }.to_json
+      :CityName => city,
+      :State =>state_text,
+      :ZipCode =>zipcode,
+      :LicenseKey => Spree::Config.cdyne_license_key
+    }.to_json
   end
 
 end
