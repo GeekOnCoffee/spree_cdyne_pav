@@ -1,5 +1,5 @@
 Spree::Address.class_eval do
-  attr_accessor :cdyne_override, :is_shipping, :cdyne_invalid
+  attr_accessor :cdyne_override, :is_shipping, :cdyne_invalid, :cdyne_validated
   attr_accessible :cdyne_override, :cdyne_address_id, :is_shipping
 
   has_one :cdyne_address, :class_name => "Spree::Address", :foreign_key => :cdyne_address_id
@@ -21,6 +21,7 @@ Spree::Address.class_eval do
         errors.add(:base, I18n.t('cdyne.errors.10_not_found'))
         return true
       when 100, 101, 200
+        self.cdyne_validated = true
         return true
       when 102, 202
         self.cdyne_invalid = true
