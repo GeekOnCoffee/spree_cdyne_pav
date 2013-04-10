@@ -1,3 +1,10 @@
 en:
+  cdyne:
+    errors:
+      1_invalid_input: "Invalid input"
+      10_not_found: "Input Address is not found"
+      102_address_2_not_confirmed: "Input Address Primary number is DPV confirmed. Secondary number is present but not DPV confirmed"
+      103_address_2_missing: "Input address Primary number is DPV confirmed, Secondary number is missing"
+    address:
   use_original_address: "Use Original Address"
   you_entered: "You Entered"
