@@ -4,10 +4,7 @@ Spree::CheckoutController.class_eval do
 
   def update
     if @order.state == "address"
-      object_params[:ship_address_attributes][:is_shipping] = true
-      # @order.assign_attributes(object_params)
-      # @order.shipping_address.cdyne_update
-      #@order.shipping_address.cdyne_address_valid?
+      object_params[:ship_address_attributes][:is_shipping] = true if object_params[:ship_address_attributes]
     end
     orig_update
   end
