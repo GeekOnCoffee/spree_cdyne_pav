@@ -7,7 +7,7 @@ Spree::Address.class_eval do
   validate :must_be_cdyne_valid
 
   def must_be_cdyne_valid
-    if is_shipping && country.iso3 == "USA" && cdyne_override != "1"
+    if is_shipping && (country.iso3 == "USA" || country.iso3 == "CAN") && cdyne_override != "1"
       cdyne_update
       status_code = cdyne_address_response["ReturnCode"]
       case status_code
