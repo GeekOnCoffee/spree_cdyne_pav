@@ -1,29 +1,32 @@
 Spree::Address.class_eval do
-  attr_accessor :cdyne_override
-  attr_accessor :is_shipping
+  attr_accessor :cdyne_override, :is_shipping, :cdyne_invalid
   attr_accessible :cdyne_override, :cdyne_address_id, :is_shipping
 
   has_one :cdyne_address, :class_name => "Spree::Address", :foreign_key => :cdyne_address_id
 
-  validate :must_by_cdyne_valid
+  validate :must_be_cdyne_valid
 
-  def must_by_cdyne_valid
-    if is_shipping && country.iso3 == "USA"
+  def must_be_cdyne_valid
+    if is_shipping && country.iso3 == "USA" && cdyne_override != "1"
       cdyne_update
       status_code = cdyne_address_response["ReturnCode"]
       case status_code
       when 1
+        self.cdyne_invalid = true
         errors.add(:base, I18n.t('cdyne.errors.1_invalid_input'))
       when 2
         raise "Invalid Cdyne License specified"
       when 10
+        self.cdyne_invalid = true
         errors.add(:base, I18n.t('cdyne.errors.10_not_found'))
         return true
       when 100, 101, 200
         return true
       when 102, 202
-        errors.add(:address2, I18n.t('cdyne.errors.103_address_2_missing'))
+        self.cdyne_invalid = true
+        errors.add(:address2, I18n.t('cdyne.errors.102_address_2_not_confirmed'))
       when 103
+        self.cdyne_invalid = true
         errors.add(:address2, I18n.t('cdyne.errors.103_address_2_missing'))
         return true
       end
@@ -50,27 +53,6 @@ Spree::Address.class_eval do
 
     if address.save
       self.update_attribute(:cdyne_address_id, address.id)
-    end
-    logger.info "CDYNE Address is #{address.inspect}"
-  end
-
-  # def cdyne_address_valid?
-  #   return true unless self.country.iso3 == "USA"
-  #   cdyne_address_status
-  # end
-
-  def cdyne_address_status(status_code=cdyne_address_response["ReturnCode"])
-    Rails.logger.info "Response code is #{status_code}"
-    case status_code
-    when 2
-      raise "Invalid Cdyne License specified"
-    when 10, 200
-      return false
-    when 100
-      return true
-    when 103
-      errors.add(:address2, I18n.t('cdyne.errors.103_address_2_missing'))
-      return false
     end
   end
 

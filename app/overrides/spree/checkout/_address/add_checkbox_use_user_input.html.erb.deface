@@ -1,6 +1,5 @@
-<!-- insert_bottom "[data-hook=shipping_fieldset_wrapper]" -->
-<%# original_address = Spree::Address.find(@order.ship_address.cdyne_address_id) if @order.ship_address and @order.ship_address.cdyne_address_id %>
-<%# if original_address %>
-<%#= form.check_box :use_original_address, {:checked => false} %>
-<%#= form.label :use_original_address, t(:use_original_address) %>
-<%# end %>
+<!-- insert_bottom "[data-hook=shipping_inner]" -->
+<% if ship_form.object.cdyne_invalid %>
+<%= ship_form.check_box :cdyne_override, {:checked => false} %>
+<%= ship_form.label :cdyne_override, t(:use_supplied_address) %>
+<% end %>
