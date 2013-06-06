@@ -1,9 +1,0 @@
-en:
-  cdyne:
-    errors:
-      1_invalid_input: "Invalid input"
-      10_not_found: "Sorry, we can’t find your address. Please check the details and try again, or check “Use the address I entered” at the bottom of the form."
-      102_address_2_not_confirmed: "We found your address, but are having trouble confirming the details. Please check the details and try again, or check “Use the address I entered” at the bottom of the form."
-      103_address_2_missing: "We found your address, but seem to be missing some information. Please check the details and try again, or check “Use the address I entered” at the bottom of the form."
-    address:
-  use_supplied_address: "Use the address I entered"

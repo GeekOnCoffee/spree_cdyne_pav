@@ -1,5 +1,0 @@
-<!-- insert_bottom "[data-hook=shipping_inner]" -->
-<% if ship_form.object.cdyne_invalid %>
-<%= ship_form.check_box :cdyne_override, {:checked => false} %>
-<%= ship_form.label :cdyne_override, t(:use_supplied_address) %>
-<% end %>
